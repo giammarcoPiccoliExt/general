@@ -89,7 +89,9 @@ jobs:
 
     - name: Build documentation
       if: env.RUN_BUILD_DOCS == 'true'
-      run: mkdocs build
+      run: |
+        cd documentation
+        mkdocs build
 
     - name: Renumber figcaptions
       run: |
