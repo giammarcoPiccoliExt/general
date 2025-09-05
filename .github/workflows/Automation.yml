@@ -4,7 +4,8 @@ on:
   push:
     branches:
     - main
-
+permissions:
+  contents: write
 env:
   RUN_CHECKOUT: 'true'
   RUN_SETUP: 'true'
