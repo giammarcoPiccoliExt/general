@@ -122,34 +122,35 @@ function loadFiles(username, repo, token) {
     $('#file-list-ul').empty();
 
     // Funzione ricorsiva per esplorare le cartelle
-    function fetchFolder(path = '') {
-        const url = `https://api.github.com/repos/${username}/${repo}/contents/${path}`;
-        $.ajax({
-            url: url,
-            headers: { 'Authorization': `token ${token}` },
-            success: function(files) {
-                files.forEach(file => {
-                    console.log("File trovato:", file.name, "type:", file.type, "path:", file.path);
-                    if (file.type === 'file' && file.name.endsWith('.md')) {
-                        $('#file-list-ul').append(
-                            `<li><a href="#" onclick="loadFile('${file.path}','${username}','${repo}','${token}')">${file.path}</a></li>`
-                        );
-                    } else if (file.type === 'dir') {
-                        // Richiamo ricorsivo per cartelle
+function fetchFolder(path = '') {
+    const url = `https://api.github.com/repos/${username}/${repo}/contents/${path}`;
+    $.ajax({
+        url: url,
+        headers: { 'Authorization': `token ${token}` },
+        success: function(files) {
+            files.forEach(file => {
+                if(file.type === 'dir') {
+                    if(file.name === 'documentation' || path.startsWith('documentation/')) {
                         fetchFolder(file.path);
                     }
-                });
-            },
-            error: function(err) {
-                console.error("Errore nel recupero dei file:", err);
-                alert('Errore nel caricamento dei file. Controlla console.');
-            }
-        });
-    }
+                } else if(file.type === 'file' && file.name.endsWith('.md') && path.startsWith('documentation/')) {
+                    $('#file-list-ul').append(
+                        `<li><a href="#" onclick="loadFile('${file.path}','${username}','${repo}','${token}')">${file.path}</a></li>`
+                    );
+                }
+            });
+        },
+        error: function(err) {
+            console.error(err);
+        }
+    });
+}
 
     // Avvio dal root della repo
     fetchFolder('');
 }
+
+
 function loadFile(path, username, repo, token, branch ='main') {
     const url = `https://api.github.com/repos/${username}/${repo}/contents/${path}?ref=${branch}`;
     $.ajax({
