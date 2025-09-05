@@ -82,10 +82,10 @@ jobs:
         echo "new_version=$nuova_versione" >> $GITHUB_OUTPUT
 
     - name: Automatic edit for files mkdocs
-      run: python preConfiguration\build_config.py
+      run: python preConfiguration/build_config.py
 
     - name: Automatic edit for pdf generation
-      run: python preConfiguration\pdf_config.py
+      run: python preConfiguration/pdf_config.py
 
     - name: Build documentation
       if: env.RUN_BUILD_DOCS == 'true'
@@ -176,7 +176,7 @@ jobs:
         done
 
     - name: Optimize images
-      run: python preConfiguration\image_resizier.py
+      run: python preConfiguration/image_resizier.py
 
     - name: Deploy docs with Mike
       if: env.RUN_DEPLOY_DOCS == 'true'
