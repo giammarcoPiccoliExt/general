@@ -183,6 +183,8 @@ jobs:
 
     - name: Deploy docs with Mike
       if: env.RUN_DEPLOY_DOCS == 'true'
-      run: mike deploy --push --update-aliases ${{ env.new_version }} latest
+      run: |
+        cd documentation
+        mike deploy --push --update-aliases ${{ env.new_version }} latest
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
