@@ -22,7 +22,7 @@
     top: 0;
     width: 280px;
     height: 100vh;
-    background: #162538;
+    background: #616161;
     color: #fff;
     border-right: 1px solid #444;
     padding: 20px 10px 10px 10px;
@@ -32,6 +32,11 @@
   #sidebar.collapsed {
     left: -250px;
   }
+  a {
+    color: #ffab66;
+    text-decoration: none;
+  }
+  
   #sidebar-toggle {
     position: fixed;
     left: 0;
@@ -121,72 +126,81 @@ function loadFiles(username, repo, token) {
 
     $('#file-list-ul').empty();
 
-    // Funzione ricorsiva per esplorare le cartelle
 function fetchFolder(path = '') {
     const url = `https://api.github.com/repos/${username}/${repo}/contents/${path}`;
     $.ajax({
         url: url,
         headers: { 'Authorization': `token ${token}` },
         success: function(files) {
+            console.log(`Risposta per path: "${path}"`, files);
+
             files.forEach(file => {
-                if(file.type === 'dir') {
-                    if(file.name === 'documentation' || path.startsWith('documentation/')) {
+                console.log(`Analizzo: ${file.name} (${file.type}) - path: ${file.path}`);
+
+                if (file.type === 'dir') {
+                    // Scendiamo solo dentro documentation e tutte le sue sottocartelle
+                    if (file.path === 'documentation' || file.path.startsWith('documentation/')) {
                         fetchFolder(file.path);
                     }
-                } else if(file.type === 'file' && file.name.endsWith('.md') && path.startsWith('documentation/')) {
-                    $('#file-list-ul').append(
-                        `<li><a href="#" onclick="loadFile('${file.path}','${username}','${repo}','${token}')">${file.path}</a></li>`
-                    );
+                } 
+                else if (file.type === 'file' && file.name.endsWith('.md')&& !(file.path.startsWith('documentation/site/'))) {
+                    // Aggiungiamo solo i file sotto documentation e tutte le sue sottocartelle
+                    if (path === 'documentation' || path.startsWith('documentation/')) {
+                        $('#file-list-ul').append(
+                            `<li><a href="#" onclick="loadFile('${file.path}','${username}','${repo}','${token}')">${file.path}</a></li>`
+                        );
+                        console.log(`File aggiunto: ${file.path}`);
+                    }
                 }
             });
         },
         error: function(err) {
-            console.error(err);
+            console.error("Errore AJAX:", err.status, err.statusText);
+            if (err.responseText) console.error("Response:", err.responseText);
         }
     });
 }
-
-    // Avvio dal root della repo
-    fetchFolder('');
+    fetchFolder();
 }
-
 
 function loadFile(path, username, repo, token, branch ='main') {
     const url = `https://api.github.com/repos/${username}/${repo}/contents/${path}?ref=${branch}`;
+    
     $.ajax({
         url: url,
         headers: { 'Authorization': `token ${token}` },
         success: function(file) {
-            if (file && file.content) {
-                // Decodifica UTF-8
-                let content = decodeBase64Utf8(file.content);
-                currentFileContent = content; // Save original markdown
+            if (!file || !file.content) return;
 
-                // Impostiamo il contenuto nell'editor (sezione edit)
-                editor.setMarkdown(content);
-                $('#editor').show();
+            // Decodifica Base64 in UTF-8
+            const content = decodeBase64Utf8(file.content);
+            currentFileContent = content; // salva il markdown originale
 
-                // Preview: patch solo per la visualizzazione
-                setTimeout(function() {
-                    const baseUrl = `https://raw.githubusercontent.com/${username}/${repo}/${branch}/documentation/docs/`;
-                    // Sostituisci src delle immagini nella preview
-                    $('.editormd-preview-container img').each(function() {
-                        const src = $(this).attr('src');
-                        if (src && src.startsWith('images/')) {
-                            $(this).attr('src', baseUrl + src);
-                        }
-                    });
-                }, 500);
+            // Imposta il contenuto nell'editor
+            editor.setMarkdown(content);
+            $('#editor').show();
 
-                // Aggiorna variabili globali per eventuale salvataggio
-                currentFilePath = path;
-                currentUsername = username;
-                currentRepo = repo;
-                currentToken = token;
-                currentSha = file.sha;
+setTimeout(() => {
+    // baseUrl fino a 'documentation/docs/'
+    const baseUrl = `https://raw.githubusercontent.com/${username}/${repo}/${branch}/documentation/docs/`;
 
-                console.log("File caricato :", path);
-            }
+    $('.editormd-preview-container img').each(function() {
+        let src = $(this).attr('src');
+        if (src && src.startsWith('images/')) {
+            // Non aggiungere 'docs/' se già presente nel markdown
+            $(this).attr('src', baseUrl + src.replace(/^\/+/, ''));
+        }
+    });
+}, 500);
+
+            // Aggiorna variabili globali per salvataggio
+            currentFilePath = path;
+            currentUsername = username;
+            currentRepo = repo;
+            currentToken = token;
+            currentSha = file.sha;
+
+            console.log("File caricato:", path);
         },
         error: function(err) {
             console.error("Errore nel caricamento del file:", err);
@@ -194,6 +208,7 @@ function loadFile(path, username, repo, token, branch ='main') {
         }
     });
 }
+
 
 // Salva il file modificato su GitHub
 $('#saveBtn').on('click', function() {
