@@ -167,9 +167,9 @@ jobs:
             -H "Authorization: Bearer $API_TOKEN" \
             -H "x-Tenant: Default"\
             "https://www.movincloud.com/api/${var}/v3/api-docs" \
-            -o "docs/${var}Swagger.json")
+            -o "documentation/docs/${var}Swagger.json")
 
-          HTTP_BODY=$(cat docs/${var}Swagger.json)
+          HTTP_BODY=$(cat documentation/docs/${var}Swagger.json)
           HTTP_STATUS=$(echo "$HTTP_RESPONSE" | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
 
           echo "✅ API: $var"
