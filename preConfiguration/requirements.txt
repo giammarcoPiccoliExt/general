@@ -4,3 +4,4 @@ mkdocs-print-site-plugin
 mkdocs-material 
 markdown-captions
 mkdocs-render-swagger-plugin
+pillow

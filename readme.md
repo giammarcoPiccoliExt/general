@@ -35,8 +35,12 @@ Nella cartella docs inserire tutti i file md nominati come su nav-config.yml
 Nella cartella docs/images inserire tutte le immagini da utilizzare
 
 entrare nella folder
+
 python preConfiguration/build_config.py
+python preConfiguration/pdf_config.pyù
+
 entrare nella folder
+
 ng serve --proxy-config proxy.conf.json    
 
 

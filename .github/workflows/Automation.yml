@@ -81,6 +81,12 @@ jobs:
         echo "new_version=$nuova_versione" >> $GITHUB_ENV
         echo "new_version=$nuova_versione" >> $GITHUB_OUTPUT
 
+    - name: Automatic edit for files mkdocs
+      run: python preConfiguration\build_config.py
+
+    - name: Automatic edit for pdf generation
+      run: python preConfiguration\pdf_config.py
+
     - name: Build documentation
       if: env.RUN_BUILD_DOCS == 'true'
       run: mkdocs build
@@ -169,12 +175,11 @@ jobs:
           echo "-------------------------------"
         done
 
+    - name: Optimize images
+      run: python preConfiguration\image_resizier.py
+
     - name: Deploy docs with Mike
       if: env.RUN_DEPLOY_DOCS == 'true'
       run: mike deploy --push --update-aliases ${{ env.new_version }} latest
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
-
-
