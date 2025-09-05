@@ -97,7 +97,7 @@ jobs:
     - name: Renumber figcaptions
       run: |
         pip install beautifulsoup4
-        python preConfiguration/figureEnumerator.py site/print_page.html
+        python preConfiguration/figureEnumerator.py documentation/site/print_page.html
 
     - name: Install wkhtmltopdf
       run: |
