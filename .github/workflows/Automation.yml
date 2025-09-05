@@ -127,7 +127,7 @@ jobs:
           --margin-right 13 \
           "file://$(pwd)/documentation/pdfGeneration/pdf-firstPage.html" \
           "file://$(pwd)/documentation/site/print_page.html" \
-          "$(pwd)/docs/personalization/SCMP_SUM.pdf"
+          "$(pwd)/documentation/docs/personalization/SCMP_SUM.pdf"
 
     - name: Login API(EDIT)
       if: env.RUN_SWAGGER == 'true'
