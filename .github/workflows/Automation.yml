@@ -92,11 +92,12 @@ jobs:
       run: |
         cd documentation
         mkdocs build
+        cd ..
 
     - name: Renumber figcaptions
       run: |
         pip install beautifulsoup4
-        python pdfGeneration/figureEnumerator.py site/print_page.html
+        python preConfiguration/figureEnumerator.py site/print_page.html
 
     - name: Install wkhtmltopdf
       run: |
