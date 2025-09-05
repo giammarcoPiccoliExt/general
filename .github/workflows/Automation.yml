@@ -116,17 +116,17 @@ jobs:
           --disable-smart-shrinking \
           --dpi 200 \
           --encoding UTF-8 \
-          --header-html "file://$(pwd)/pdfGeneration/pdf-header.html" \
-          --footer-html "file://$(pwd)/pdfGeneration/pdf-footer.html" \
-          --user-style-sheet "file://$(pwd)/pdfGeneration/pdf-leonardo.css" \
+          --header-html "file://$(pwd)/documentation/pdfGeneration/pdf-header.html" \
+          --footer-html "file://$(pwd)/documentation/pdfGeneration/pdf-footer.html" \
+          --user-style-sheet "file://$(pwd)/documentation/pdfGeneration/pdf-leonardo.css" \
           --footer-spacing 10 \
           --header-spacing 10 \
           --margin-top 51.317 \
           --margin-bottom 33.56 \
           --margin-left 19.138 \
           --margin-right 13 \
-          "file://$(pwd)/pdfGeneration/pdf-firstPage.html" \
-          "file://$(pwd)/site/print_page.html" \
+          "file://$(pwd)/documentation/pdfGeneration/pdf-firstPage.html" \
+          "file://$(pwd)/documentation/site/print_page.html" \
           "$(pwd)/docs/personalization/SCMP_SUM.pdf"
 
     - name: Login API(EDIT)
