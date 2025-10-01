@@ -105,12 +105,12 @@ jobs:
     - name: Renumber figcaptions IT
       run: |
         pip install beautifulsoup4
-        python preConfiguration/figureEnumerator.py documentation/site/it/print_page.html
+        python preConfiguration/figureEnumerator.py documentation/generated/it/print_page.html
 
     - name: Renumber figcaptions EN
       run: |
         pip install beautifulsoup4
-        python preConfiguration/figureEnumerator.py documentation/site/en/print_page.html
+        python preConfiguration/figureEnumerator.py documentation/generated/en/print_page.html
 
     - name: Install wkhtmltopdf
       run: |
@@ -139,7 +139,7 @@ jobs:
           --margin-left 19.138 \
           --margin-right 13 \
           "file://$(pwd)/documentation/overrides/pdfGeneration/it/pdf-firstPage.html" \
-          "file://$(pwd)/documentation/site/it/print_page.html" \
+          "file://$(pwd)/documentation/generated/it/print_page.html" \
           "$(pwd)/documentation/docs/personalization/SCMP_SUM_it.pdf"
 
     - name: Generate PDF EN
@@ -163,7 +163,7 @@ jobs:
           --margin-left 19.138 \
           --margin-right 13 \
           "file://$(pwd)/documentation/overrides/pdfGeneration/en/pdf-firstPage.html" \
-          "file://$(pwd)/documentation/site/en/print_page.html" \
+          "file://$(pwd)/documentation/generated/en/print_page.html" \
           "$(pwd)/documentation/docs/personalization/SCMP_SUM_en.pdf"
 
     - name: Login API(EDIT)
