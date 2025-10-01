@@ -25,9 +25,9 @@ def save_rendered(content, filename):
 
 # Lista dei template da generare e nomi file output (senza .j2)
 templates = [
-    ("pdf-header.html.j2", "documentation/overrides/pdfGeneration/it/pdf-header.html"),
-    ("pdf-footer.html.j2", "documentation/overrides/pdfGeneration/it/pdf-footer.html"),
-    ("pdf-firstPage.html.j2", "documentation/overrides/pdfGeneration/it/pdf-firstPage.html"),
+    ("pdf-header.html.j2", "documentation/pdfGeneration/it/pdf-header.html"),
+    ("pdf-footer.html.j2", "documentation/pdfGeneration/it/pdf-footer.html"),
+    ("pdf-firstPage.html.j2", "documentation/pdfGeneration/it/pdf-firstPage.html"),
 ]
 
 for tpl_file, out_file in templates:
@@ -54,9 +54,9 @@ def render_template(filename, context):
 
 # Lista dei template da generare e nomi file output (senza .j2)
 templates = [
-    ("pdf-header.html.j2", "documentation/overrides/pdfGeneration/en/pdf-header.html"),
-    ("pdf-footer.html.j2", "documentation/overrides/pdfGeneration/en/pdf-footer.html"),
-    ("pdf-firstPage.html.j2", "documentation/overrides/pdfGeneration/en/pdf-firstPage.html"),
+    ("pdf-header.html.j2", "documentation/pdfGeneration/en/pdf-header.html"),
+    ("pdf-footer.html.j2", "documentation/pdfGeneration/en/pdf-footer.html"),
+    ("pdf-firstPage.html.j2", "documentation/pdfGeneration/en/pdf-firstPage.html"),
 ]
 
 for tpl_file, out_file in templates:

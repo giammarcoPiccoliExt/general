@@ -1,0 +1,5 @@
+nav:
+- "<span class='ms-Icon ms-Icon--AuthenticatorApp'></span> Authentication": Authentication.md
+- "<span class='ms-Icon ms-Icon--Admin'></span> Administration": Administration.md
+- "<span class='ms-Icon ms-Icon--AzureAPIManagement'></span> REST API":
+  - "Finops": finopsAPI.md

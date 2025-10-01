@@ -1,8 +1,8 @@
 
 use_directory_urls: false
 
-site_name: "Documentazione Super Progetto"
-site_author: "Mario Rossi"
+site_name: "{{ site_name }}"
+site_author: "{{ author }}"
 
 
 theme:
@@ -10,12 +10,7 @@ theme:
 
 
 nav:
-nav:
-- "<span class='ms-Icon ms-Icon--AuthenticatorApp'></span> Authentication": Authentication.md
-- "<span class='ms-Icon ms-Icon--Admin'></span> Administration": Administration.md
-- "<span class='ms-Icon ms-Icon--AzureAPIManagement'></span> REST API":
-  - "Finops": finopsAPI.md
-
+{{ nav_yaml | indent(0) }}
 
 # Configuration
 theme:

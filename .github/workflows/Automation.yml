@@ -129,8 +129,8 @@ jobs:
           --disable-smart-shrinking \
           --dpi 200 \
           --encoding UTF-8 \
-          --header-html "file://$(pwd)/documentation/overrides/pdfGeneration/it/pdf-header.html" \
-          --footer-html "file://$(pwd)/documentation/overrides/pdfGeneration/it/pdf-footer.html" \
+          --header-html "file://$(pwd)/documentation/pdfGeneration/it/pdf-header.html" \
+          --footer-html "file://$(pwd)/documentation/pdfGeneration/it/pdf-footer.html" \
           --user-style-sheet "file://$(pwd)/documentation/pdfGeneration/pdf-leonardo.css" \
           --footer-spacing 10 \
           --header-spacing 10 \
@@ -138,7 +138,7 @@ jobs:
           --margin-bottom 33.56 \
           --margin-left 19.138 \
           --margin-right 13 \
-          "file://$(pwd)/documentation/overrides/pdfGeneration/it/pdf-firstPage.html" \
+          "file://$(pwd)/documentation/pdfGeneration/it/pdf-firstPage.html" \
           "file://$(pwd)/documentation/generated/it/print_page.html" \
           "$(pwd)/documentation/generated/it/SCMP_SUM_it.pdf"
 
@@ -153,8 +153,8 @@ jobs:
           --disable-smart-shrinking \
           --dpi 200 \
           --encoding UTF-8 \
-          --header-html "file://$(pwd)/documentation/overrides/pdfGeneration/en/pdf-header.html" \
-          --footer-html "file://$(pwd)/documentation/overrides/pdfGeneration/en/pdf-footer.html" \
+          --header-html "file://$(pwd)/documentation/pdfGeneration/en/pdf-header.html" \
+          --footer-html "file://$(pwd)/documentation/pdfGeneration/en/pdf-footer.html" \
           --user-style-sheet "file://$(pwd)/documentation/pdfGeneration/pdf-leonardo.css" \
           --footer-spacing 10 \
           --header-spacing 10 \
@@ -162,7 +162,7 @@ jobs:
           --margin-bottom 33.56 \
           --margin-left 19.138 \
           --margin-right 13 \
-          "file://$(pwd)/documentation/overrides/pdfGeneration/en/pdf-firstPage.html" \
+          "file://$(pwd)/documentation/pdfGeneration/en/pdf-firstPage.html" \
           "file://$(pwd)/documentation/generated/en/print_page.html" \
           "$(pwd)/documentation/generated/en/SCMP_SUM_en.pdf"
 

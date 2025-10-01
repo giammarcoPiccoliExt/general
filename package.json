@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "decap-cms": "^3.8.3",
-    "suneditor": "^2.47.7",
-    "suneditor-react": "^3.6.1"
-  }
-}
