@@ -14,7 +14,7 @@ env:
   RUN_VERSIONING: 'true'
   RUN_BUILD_DOCS: 'true'
   RUN_GENERATE_PDF: 'true'
-  RUN_DEPLOY_DOCS: 'false'
+  RUN_DEPLOY_DOCS: 'true'
 
 jobs:
   doc_pipeline:
