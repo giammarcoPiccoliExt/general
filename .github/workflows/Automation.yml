@@ -215,6 +215,10 @@ jobs:
           echo "-------------------------------"
         done
 
+    - name: Copy personalization folder to generated/it and generated/en
+      run: |
+        python preConfiguration/copy_personalization.py
+
     - name: Optimize images
       run: python preConfiguration/image_resizier.py
 
