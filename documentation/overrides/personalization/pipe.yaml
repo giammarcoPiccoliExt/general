@@ -42,6 +42,6 @@ stages:
     minioEndpoint: '$(MINIOENDPOINTCOLLAUDO)'
     minioUsername: '$(MINIOUSERCOLLAUDO)'
     minioPassword: '$(MINIOPASSCOLLAUDO)'
-    bucket: 'documentation'
+    bucket: 'documentationv2'
     deleteBeforeUpload: 'true'
     folder: 'latest'
