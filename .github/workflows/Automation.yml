@@ -225,38 +225,3 @@ jobs:
         mike deploy --push --update-aliases ${{ env.new_version }} latest
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Clean old versions
-      run: |
-        echo "Pulizia versioni vecchie..."
-
-        # Recupera lista versioni in JSON
-        versions=$(mike list --json)
-
-        # Mese e anno corrente
-        current_month=$(date +'%m')
-        current_year=7   # oppure ricava da $(date +'%y')
-
-        # Calcola mese precedente (gestendo gennaio → dicembre)
-        prev_month=$(date -d "last month" +'%m')
-
-        # Estrai tutte le versioni del mese precedente
-        prev_versions=$(echo "$versions" | jq -r \
-          '.[] | select(.version | test("^'"$current_year"'\.'"$prev_month"'\.")) | .version')
-
-        echo "Versioni del mese precedente: $prev_versions"
-
-        if [ -n "$prev_versions" ]; then
-          # Trova la più grande (ultima patch)
-          keep=$(echo "$prev_versions" | sort -V | tail -n 1)
-
-          echo "Mantengo $keep, elimino le altre"
-
-          for v in $prev_versions; do
-            if [ "$v" != "$keep" ]; then
-              mike delete "$v" --push
-            fi
-          done
-        else
-          echo "Nessuna versione trovata per il mese precedente"
-        fi
