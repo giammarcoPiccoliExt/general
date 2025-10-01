@@ -88,17 +88,29 @@ jobs:
     - name: Automatic edit for pdf generation
       run: python preConfiguration/pdf_config.py
 
-    - name: Build documentation
+    - name: Build documentation IT
       if: env.RUN_BUILD_DOCS == 'true'
       run: |
         cd documentation
-        mkdocs build
+        mkdocs build -f config/it/mkdocs.yml
         cd ..
 
-    - name: Renumber figcaptions
+    - name: Build documentation EN
+      if: env.RUN_BUILD_DOCS == 'true'
+      run: |
+        cd documentation
+        mkdocs build -f config/en/mkdocs.yml
+        cd ..
+
+    - name: Renumber figcaptions IT
       run: |
         pip install beautifulsoup4
-        python preConfiguration/figureEnumerator.py documentation/site/print_page.html
+        python preConfiguration/figureEnumerator.py documentation/site/it/print_page.html
+
+    - name: Renumber figcaptions EN
+      run: |
+        pip install beautifulsoup4
+        python preConfiguration/figureEnumerator.py documentation/site/en/print_page.html
 
     - name: Install wkhtmltopdf
       run: |
@@ -106,7 +118,7 @@ jobs:
         sudo apt install -y ./wkhtmltox_0.12.5-1.focal_amd64.deb
       # SCARICARE QUESTA VERSIONE SENZA BUG? SIMIL DP
 
-    - name: Generate PDF
+    - name: Generate PDF IT
       if: env.RUN_GENERATE_PDF == 'true'
       run: |
         wkhtmltopdf \
@@ -117,8 +129,8 @@ jobs:
           --disable-smart-shrinking \
           --dpi 200 \
           --encoding UTF-8 \
-          --header-html "file://$(pwd)/documentation/pdfGeneration/pdf-header.html" \
-          --footer-html "file://$(pwd)/documentation/pdfGeneration/pdf-footer.html" \
+          --header-html "file://$(pwd)/documentation/overrides/pdfGeneration/it/pdf-header.html" \
+          --footer-html "file://$(pwd)/documentation/overrides/pdfGeneration/it/pdf-footer.html" \
           --user-style-sheet "file://$(pwd)/documentation/pdfGeneration/pdf-leonardo.css" \
           --footer-spacing 10 \
           --header-spacing 10 \
@@ -126,9 +138,33 @@ jobs:
           --margin-bottom 33.56 \
           --margin-left 19.138 \
           --margin-right 13 \
-          "file://$(pwd)/documentation/pdfGeneration/pdf-firstPage.html" \
-          "file://$(pwd)/documentation/site/print_page.html" \
-          "$(pwd)/documentation/docs/personalization/SCMP_SUM.pdf"
+          "file://$(pwd)/documentation/overrides/pdfGeneration/it/pdf-firstPage.html" \
+          "file://$(pwd)/documentation/site/it/print_page.html" \
+          "$(pwd)/documentation/docs/personalization/SCMP_SUM_it.pdf"
+
+    - name: Generate PDF EN
+      if: env.RUN_GENERATE_PDF == 'true'
+      run: |
+        wkhtmltopdf \
+          --enable-local-file-access \
+          --enable-javascript \
+          --javascript-delay 1000 \
+          --print-media-type \
+          --disable-smart-shrinking \
+          --dpi 200 \
+          --encoding UTF-8 \
+          --header-html "file://$(pwd)/documentation/overrides/pdfGeneration/en/pdf-header.html" \
+          --footer-html "file://$(pwd)/documentation/overrides/pdfGeneration/en/pdf-footer.html" \
+          --user-style-sheet "file://$(pwd)/documentation/pdfGeneration/pdf-leonardo.css" \
+          --footer-spacing 10 \
+          --header-spacing 10 \
+          --margin-top 51.317 \
+          --margin-bottom 33.56 \
+          --margin-left 19.138 \
+          --margin-right 13 \
+          "file://$(pwd)/documentation/overrides/pdfGeneration/en/pdf-firstPage.html" \
+          "file://$(pwd)/documentation/site/en/print_page.html" \
+          "$(pwd)/documentation/docs/personalization/SCMP_SUM_en.pdf"
 
     - name: Login API(EDIT)
       if: env.RUN_SWAGGER == 'true'
