@@ -140,7 +140,7 @@ jobs:
           --margin-right 13 \
           "file://$(pwd)/documentation/overrides/pdfGeneration/it/pdf-firstPage.html" \
           "file://$(pwd)/documentation/generated/it/print_page.html" \
-          "$(pwd)/documentation/docs/enerated/it/SCMP_SUM_it.pdf"
+          "$(pwd)/documentation/generated/it/SCMP_SUM_it.pdf"
 
     - name: Generate PDF EN
       if: env.RUN_GENERATE_PDF == 'true'
@@ -164,7 +164,7 @@ jobs:
           --margin-right 13 \
           "file://$(pwd)/documentation/overrides/pdfGeneration/en/pdf-firstPage.html" \
           "file://$(pwd)/documentation/generated/en/print_page.html" \
-          "$(pwd)/documentation/docs/generated/en/SCMP_SUM_en.pdf"
+          "$(pwd)/documentation/generated/en/SCMP_SUM_en.pdf"
 
     - name: Login API(EDIT)
       if: env.RUN_SWAGGER == 'true'
