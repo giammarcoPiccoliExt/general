@@ -4,8 +4,8 @@ import shutil
 # Copy personalization folder to generated/it and generated/en
 src = os.path.join("documentation", "overrides", "personalization")
 destinations = [
-    os.path.join("documentation", "generated", "it", "personalization"),
-    os.path.join("documentation", "generated", "en", "personalization"),
+    os.path.join("documentation", "generated", "it","overrides", "personalization"),
+    os.path.join("documentation", "generated", "en","overrides", "personalization"),
 ]
 
 for dst in destinations:
