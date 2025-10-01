@@ -1,7 +1,7 @@
 from PIL import Image
 import os
 
-INPUT_DIR = "documentation/site"
+INPUT_DIR = "documentation/generated"
 QUALITY = 60  # qualità jpg (0-100)
 MAX_WIDTH = 1080  # ridimensiona se più largo
 MAX_HEIGHT = 720
