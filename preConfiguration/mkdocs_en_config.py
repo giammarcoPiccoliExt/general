@@ -1,14 +1,15 @@
 import yaml
 
-with open("documentation/mkdocs.yml", "r") as f:
+with open('mkdocs.yml', 'r', encoding='utf-8') as f:
     config = yaml.safe_load(f)
 
-# Mantieni solo EN per la build PDF
-config['plugins']['i18n']['languages'] = [
-    {"locale": "en", "default": True, "name": "English", "build": True}
-]
-config['plugins']['i18n']['default_language_only'] = True
+# plugins è una lista, non un dict
+for plugin in config['plugins']:
+    if isinstance(plugin, dict) and 'i18n' in plugin:
+        plugin['i18n']['languages'] = [
+            {'locale': 'en', 'name': 'English', 'build': True},
+            {'locale': 'it', 'name': 'Italian', 'build': True}
+        ]
 
-# Salva configurazione temporanea
-with open("documentation/mkdocs_en.yml", "w") as f:
-    yaml.dump(config, f)
+with open('mkdocs_en.yml', 'w', encoding='utf-8') as f:
+    yaml.safe_dump(config, f, sort_keys=False)
