@@ -92,7 +92,7 @@ jobs:
       if: env.RUN_BUILD_DOCS == 'true'
       run: |
         cd documentation
-        mkdocs build -f config/it/mkdocs.yml
+        mkdocs build -f config/mkdocs.yml
         cd ..
 
     - name: Build documentation EN
@@ -105,7 +105,7 @@ jobs:
     - name: Renumber figcaptions IT
       run: |
         pip install beautifulsoup4
-        python preConfiguration/figureEnumerator.py documentation/generated/it/print_page.html
+        python preConfiguration/figureEnumerator.py documentation/generated/print_page.html
 
     - name: Renumber figcaptions EN
       run: |
@@ -129,8 +129,8 @@ jobs:
           --disable-smart-shrinking \
           --dpi 200 \
           --encoding UTF-8 \
-          --header-html "file://$(pwd)/documentation/pdfGeneration/it/pdf-header.html" \
-          --footer-html "file://$(pwd)/documentation/pdfGeneration/it/pdf-footer.html" \
+          --header-html "file://$(pwd)/documentation/pdfGeneration/pdf-header.html" \
+          --footer-html "file://$(pwd)/documentation/pdfGeneration/pdf-footer.html" \
           --user-style-sheet "file://$(pwd)/documentation/pdfGeneration/pdf-leonardo.css" \
           --footer-spacing 10 \
           --header-spacing 10 \
@@ -138,9 +138,9 @@ jobs:
           --margin-bottom 33.56 \
           --margin-left 19.138 \
           --margin-right 13 \
-          "file://$(pwd)/documentation/pdfGeneration/it/pdf-firstPage.html" \
-          "file://$(pwd)/documentation/generated/it/print_page.html" \
-          "$(pwd)/documentation/generated/it/SCMP_SUM_it.pdf"
+          "file://$(pwd)/documentation/pdfGeneration/pdf-firstPage.html" \
+          "file://$(pwd)/documentation/generated/print_page.html" \
+          "$(pwd)/documentation/generated/SCMP_SUM_it.pdf"
 
     - name: Generate PDF EN
       if: env.RUN_GENERATE_PDF == 'true'

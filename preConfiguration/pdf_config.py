@@ -3,11 +3,11 @@ from jinja2 import Template
 import os
 
 # Carica config.json
-with open("preConfiguration/it/config.json") as f:
+with open("preConfiguration/config.json") as f:
     config = json.load(f)
 
 # Percorso cartella template
-template_folder = "preConfiguration/it/"
+template_folder = "preConfiguration/"
 
 def render_template(filename, context):
     path = os.path.join(template_folder, filename)
@@ -25,9 +25,9 @@ def save_rendered(content, filename):
 
 # Lista dei template da generare e nomi file output (senza .j2)
 templates = [
-    ("pdf-header.html.j2", "documentation/pdfGeneration/it/pdf-header.html"),
-    ("pdf-footer.html.j2", "documentation/pdfGeneration/it/pdf-footer.html"),
-    ("pdf-firstPage.html.j2", "documentation/pdfGeneration/it/pdf-firstPage.html"),
+    ("pdf-header.html.j2", "documentation/pdfGeneration/pdf-header.html"),
+    ("pdf-footer.html.j2", "documentation/pdfGeneration/pdf-footer.html"),
+    ("pdf-firstPage.html.j2", "documentation/pdfGeneration/pdf-firstPage.html"),
 ]
 
 for tpl_file, out_file in templates:
