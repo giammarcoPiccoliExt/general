@@ -92,25 +92,12 @@ jobs:
       if: env.RUN_BUILD_DOCS == 'true'
       run: |
         cd documentation
-        mkdocs build -f config/mkdocs.yml
-        cd ..
-
-    - name: Build documentation EN
-      if: env.RUN_BUILD_DOCS == 'true'
-      run: |
-        cd documentation
-        mkdocs build -f config/en/mkdocs.yml
-        cd ..
+        mkdocs build
 
     - name: Renumber figcaptions IT
       run: |
         pip install beautifulsoup4
-        python preConfiguration/figureEnumerator.py documentation/generated/print_page.html
-
-    - name: Renumber figcaptions EN
-      run: |
-        pip install beautifulsoup4
-        python preConfiguration/figureEnumerator.py documentation/generated/en/print_page.html
+        python preConfiguration/figureEnumerator.py documentation/site/print_page.html
 
     - name: Install wkhtmltopdf
       run: |
@@ -141,30 +128,6 @@ jobs:
           "file://$(pwd)/documentation/pdfGeneration/pdf-firstPage.html" \
           "file://$(pwd)/documentation/generated/print_page.html" \
           "$(pwd)/documentation/generated/SCMP_SUM_it.pdf"
-
-    - name: Generate PDF EN
-      if: env.RUN_GENERATE_PDF == 'true'
-      run: |
-        wkhtmltopdf \
-          --enable-local-file-access \
-          --enable-javascript \
-          --javascript-delay 1000 \
-          --print-media-type \
-          --disable-smart-shrinking \
-          --dpi 200 \
-          --encoding UTF-8 \
-          --header-html "file://$(pwd)/documentation/pdfGeneration/en/pdf-header.html" \
-          --footer-html "file://$(pwd)/documentation/pdfGeneration/en/pdf-footer.html" \
-          --user-style-sheet "file://$(pwd)/documentation/pdfGeneration/pdf-leonardo.css" \
-          --footer-spacing 10 \
-          --header-spacing 10 \
-          --margin-top 51.317 \
-          --margin-bottom 33.56 \
-          --margin-left 19.138 \
-          --margin-right 13 \
-          "file://$(pwd)/documentation/pdfGeneration/en/pdf-firstPage.html" \
-          "file://$(pwd)/documentation/generated/en/print_page.html" \
-          "$(pwd)/documentation/generated/en/SCMP_SUM_en.pdf"
 
     - name: Login API(EDIT)
       if: env.RUN_SWAGGER == 'true'
@@ -214,10 +177,6 @@ jobs:
           echo "📄 Response preview: $(echo "$HTTP_BODY" | head -c 200)..."
           echo "-------------------------------"
         done
-
-    - name: Copy personalization folder to generated/it and generated/en
-      run: |
-        python preConfiguration/copy_personalization.py
 
     - name: Optimize images
       run: python preConfiguration/image_resizier.py
