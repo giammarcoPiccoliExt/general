@@ -1,22 +1,46 @@
 import yaml
+import sys
 from pathlib import Path
 
-base_path = Path(__file__).parent.parent / 'documentation'
-mkdocs_file = base_path / 'mkdocs.yml'
-mkdocs_en_file = base_path / 'mkdocs_en.yml'
+if len(sys.argv) < 2:
+    print("Usage: python mkdocs_lang_config.py <lang>")
+    sys.exit(1)
 
-# Leggi mkdocs.yml
-with mkdocs_file.open('r', encoding='utf-8') as f:
+lang = sys.argv[1].lower()
+if lang not in ['it', 'en']:
+    print("Language must be 'it' or 'en'")
+    sys.exit(1)
+
+# Path del file mkdocs.yml
+config_file = Path(__file__).parent.parent / "documentation" / "mkdocs.yml"
+
+with open(config_file, 'r', encoding='utf-8') as f:
     config = yaml.safe_load(f)
 
-# Modifica solo il plugin i18n
-for plugin in config.get('plugins', []):
+# Configurazione i18n dinamica
+config['plugins'] = config.get('plugins', [])
+for i, plugin in enumerate(config['plugins']):
     if isinstance(plugin, dict) and 'i18n' in plugin:
-        plugin['i18n']['languages'] = [
-            {'locale': 'en', 'name': 'English', 'default': True, 'build': True},
-            {'locale': 'it', 'name': 'Italian', 'default': False, 'build': True}
+        config['plugins'][i]['i18n']['languages'] = [
+            {
+                'locale': 'it',
+                'default': lang=='it',
+                'name': 'Italian',
+                'build': lang=='it'
+            },
+            {
+                'locale': 'en',
+                'default': lang=='en',
+                'name': 'English',
+                'build': lang=='en'
+            }
         ]
+        # Rimuove eventuali opzioni obsolete
+        config['plugins'][i].pop('default_language_only', None)
 
-# Salva in mkdocs_en.yml
-with mkdocs_en_file.open('w', encoding='utf-8') as f:
-    yaml.safe_dump(config, f, sort_keys=False)
+# Salva config temporanea per build
+temp_file = Path(__file__).parent.parent / "documentation" / f"mkdocs_{lang}.yml"
+with open(temp_file, 'w', encoding='utf-8') as f:
+    yaml.dump(config, f, sort_keys=False)
+
+print(f"Generated temporary config for language '{lang}': {temp_file}")
