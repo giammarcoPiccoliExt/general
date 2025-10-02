@@ -37,11 +37,11 @@ for tpl_file, out_file in templates:
 
 
 # Carica config.json
-with open("preConfiguration/en/config.json") as f:
+with open("preConfiguration/config.json") as f:
     config = json.load(f)
 
 # Percorso cartella template
-template_folder = "preConfiguration/en/"
+template_folder = "preConfiguration/"
 
 def render_template(filename, context):
     path = os.path.join(template_folder, filename)
@@ -54,12 +54,12 @@ def render_template(filename, context):
 
 # Lista dei template da generare e nomi file output (senza .j2)
 templates = [
-    ("pdf-header.html.j2", "documentation/pdfGeneration/en/pdf-header.html"),
-    ("pdf-footer.html.j2", "documentation/pdfGeneration/en/pdf-footer.html"),
-    ("pdf-firstPage.html.j2", "documentation/pdfGeneration/en/pdf-firstPage.html"),
+    ("pdf-header.html.j2", "documentation/pdfGeneration/pdf-header.html"),
+    ("pdf-footer.html.j2", "documentation/pdfGeneration/pdf-footer.html"),
+    ("pdf-firstPage.html.j2", "documentation/pdfGeneration/pdf-firstPage.html"),
 ]
 
 for tpl_file, out_file in templates:
     rendered = render_template(tpl_file, config)
     save_rendered(rendered, out_file)
-    print(f"Generato EN {out_file}")
+    print(f"Generato {out_file}")
