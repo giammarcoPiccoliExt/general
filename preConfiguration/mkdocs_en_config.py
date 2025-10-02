@@ -1,7 +1,6 @@
 import yaml
 from pathlib import Path
 
-# Percorso del file mkdocs.yml relativo a questo script
 base_path = Path(__file__).parent.parent / 'documentation'
 mkdocs_file = base_path / 'mkdocs.yml'
 mkdocs_en_file = base_path / 'mkdocs_en.yml'
@@ -14,8 +13,8 @@ with mkdocs_file.open('r', encoding='utf-8') as f:
 for plugin in config.get('plugins', []):
     if isinstance(plugin, dict) and 'i18n' in plugin:
         plugin['i18n']['languages'] = [
-            {'locale': 'en', 'name': 'English', 'build': True},
-            {'locale': 'it', 'name': 'Italian', 'build': True}
+            {'locale': 'en', 'name': 'English', 'default': True, 'build': True},
+            {'locale': 'it', 'name': 'Italian', 'default': False, 'build': True}
         ]
 
 # Salva in mkdocs_en.yml
