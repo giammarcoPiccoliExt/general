@@ -163,7 +163,7 @@ jobs:
           --margin-left 19.138 \
           --margin-right 13 \
           "file://$(pwd)/documentation/pdfGeneration/pdf-firstPage.html" \
-          "file://$(pwd)/documentation/site/en/print_page.html" \
+          "file://$(pwd)/documentation/site/print_page.html" \
           "$(pwd)/documentation/site/SCMP_SUM_en.pdf"
 
     # ----------------------------
