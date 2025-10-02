@@ -135,7 +135,7 @@ jobs:
     # 🟢 BUILD + PDF ENGLISH
     # ----------------------------
     - name: Prepare mkdocs EN config
-      run: python preConfiguration/mkdocs_en_config.py
+      run: python preConfiguration/mkdocs_en_config.py en
 
     - name: Build documentation EN
       run: mkdocs build --config-file documentation/mkdocs_en.yml
