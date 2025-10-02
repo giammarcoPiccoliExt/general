@@ -1,22 +1,15 @@
-
 use_directory_urls: false
 
 site_name: "{{ site_name }}"
 site_author: "{{ author }}"
 
-
 theme:
   name: material
-
+  logo: personalization/logo.png
+  language: en
 
 nav:
 {{ nav_yaml | indent(0) }}
-
-# Configuration
-theme:
-  name: material                 # This is where the customization of the theme lives  
-  logo: personalization/logo.png
-  language: en 
 
 extra_css:
   - personalization/eng-standard-theme.css
@@ -27,7 +20,6 @@ extra_javascript:
   - personalization/toc.js
   - personalization/script.js
 
-# Customization
 extra:
   version:
     provider: mike
@@ -35,23 +27,23 @@ extra:
     collapse: true
   media_dir: 'images/extract/media'
 
-
 plugins:
-- search 
-- render_swagger:
-    css: personalization/swagger-ui.css
-- i18n:
+  - search 
+  - render_swagger:
+      css: personalization/swagger-ui.css
+  - i18n:
       docs_structure: suffix
       fallback_to_default: false
+      default_language_only: false
       languages:
         - locale: it
           default: true
-          name: italian
+          name: Italian
           build: true
         - locale: en
           name: English
           build: true
-- print-site
+  - print-site
 
 markdown_extensions:
   - markdown_captions

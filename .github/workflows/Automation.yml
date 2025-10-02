@@ -4,8 +4,10 @@ on:
   push:
     branches:
     - main
+
 permissions:
   contents: write
+
 env:
   RUN_CHECKOUT: 'true'
   RUN_SETUP: 'true'
@@ -35,7 +37,7 @@ jobs:
 
     - name: Install dependencies
       if: env.RUN_SETUP == 'true'
-      run: pip install -r preConfiguration/requirements.txt
+      run: pip install -r preConfiguration/requirements.txt beautifulsoup4 pyyaml
 
     - name: Set Git user
       if: env.RUN_SETUP == 'true'
@@ -88,6 +90,9 @@ jobs:
     - name: Automatic edit for pdf generation
       run: python preConfiguration/pdf_config.py
 
+    # ----------------------------
+    # 🟢 BUILD + PDF ITALIANO
+    # ----------------------------
     - name: Build documentation IT
       if: env.RUN_BUILD_DOCS == 'true'
       run: |
@@ -95,15 +100,12 @@ jobs:
         mkdocs build
 
     - name: Renumber figcaptions IT
-      run: |
-        pip install beautifulsoup4
-        python preConfiguration/figureEnumerator.py documentation/site/print_page.html
+      run: python preConfiguration/figureEnumerator.py documentation/site/print_page.html
 
     - name: Install wkhtmltopdf
       run: |
         wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.focal_amd64.deb
         sudo apt install -y ./wkhtmltox_0.12.5-1.focal_amd64.deb
-      # SCARICARE QUESTA VERSIONE SENZA BUG? SIMIL DP
 
     - name: Generate PDF IT
       if: env.RUN_GENERATE_PDF == 'true'
@@ -129,6 +131,44 @@ jobs:
           "file://$(pwd)/documentation/site/print_page.html" \
           "$(pwd)/documentation/site/SCMP_SUM_it.pdf"
 
+    # ----------------------------
+    # 🟢 BUILD + PDF ENGLISH
+    # ----------------------------
+    - name: Prepare mkdocs EN config
+      run: python preConfiguration/mkdocs_en_config.py
+
+    - name: Build documentation EN
+      run: mkdocs build --config-file documentation/mkdocs_en.yml
+
+    - name: Renumber figcaptions EN
+      run: python preConfiguration/figureEnumerator.py documentation/site/en/print_page.html
+
+    - name: Generate PDF EN
+      run: |
+        wkhtmltopdf \
+          --enable-local-file-access \
+          --enable-javascript \
+          --javascript-delay 1000 \
+          --print-media-type \
+          --disable-smart-shrinking \
+          --dpi 200 \
+          --encoding UTF-8 \
+          --header-html "file://$(pwd)/documentation/pdfGeneration/pdf-header.html" \
+          --footer-html "file://$(pwd)/documentation/pdfGeneration/pdf-footer.html" \
+          --user-style-sheet "file://$(pwd)/documentation/pdfGeneration/pdf-leonardo.css" \
+          --footer-spacing 10 \
+          --header-spacing 10 \
+          --margin-top 51.317 \
+          --margin-bottom 33.56 \
+          --margin-left 19.138 \
+          --margin-right 13 \
+          "file://$(pwd)/documentation/pdfGeneration/pdf-firstPage.html" \
+          "file://$(pwd)/documentation/site/en/print_page.html" \
+          "$(pwd)/documentation/site/SCMP_SUM_en.pdf"
+
+    # ----------------------------
+    # 🔹 SWAGGER + IMAGE OPTIMIZATION
+    # ----------------------------
     - name: Login API(EDIT)
       if: env.RUN_SWAGGER == 'true'
       id: api_login
@@ -144,14 +184,11 @@ jobs:
               "iam_fe_login": true,
               "error_on_iam_routes": false
             }')
-
-
         token=$(echo "$response" | jq -r '.access_token')
         if [ "$token" == "null" ] || [ -z "$token" ]; then
           echo "Login fallita: token non ricevuto"
           exit 1
         fi
-
         echo "::add-mask::$token"
         echo "API_TOKEN=$token" >> $GITHUB_ENV
         echo "api_token=$token" >> $GITHUB_OUTPUT
@@ -168,19 +205,19 @@ jobs:
             -H "x-Tenant: Default"\
             "https://www.movincloud.com/api/${var}/v3/api-docs" \
             -o "documentation/docs/${var}Swagger.json")
-
           HTTP_BODY=$(cat documentation/docs/${var}Swagger.json)
           HTTP_STATUS=$(echo "$HTTP_RESPONSE" | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
-
           echo "✅ API: $var"
           echo "🔢 HTTP Status: $HTTP_STATUS"
           echo "📄 Response preview: $(echo "$HTTP_BODY" | head -c 200)..."
-          echo "-------------------------------"
         done
 
     - name: Optimize images
       run: python preConfiguration/image_resizier.py
 
+    # ----------------------------
+    # 🔹 DEPLOY DOCS
+    # ----------------------------
     - name: Deploy docs with Mike
       if: env.RUN_DEPLOY_DOCS == 'true'
       run: |

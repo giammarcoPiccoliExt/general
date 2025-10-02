@@ -1,27 +1,21 @@
-
 use_directory_urls: false
 
 site_name: "Documentazione Super Progetto"
 site_author: "Mario Rossi"
 
-
 theme:
   name: material
-
+  logo: personalization/logo.png
+  language: en
 
 nav:
 nav:
+- Home: index.md
 - "<span class='ms-Icon ms-Icon--AuthenticatorApp'></span> Authentication": Authentication.md
 - "<span class='ms-Icon ms-Icon--Admin'></span> Administration": Administration.md
 - "<span class='ms-Icon ms-Icon--AzureAPIManagement'></span> REST API":
   - "Finops": finopsAPI.md
 
-
-# Configuration
-theme:
-  name: material                 # This is where the customization of the theme lives  
-  logo: personalization/logo.png
-  language: en 
 
 extra_css:
   - personalization/eng-standard-theme.css
@@ -32,7 +26,6 @@ extra_javascript:
   - personalization/toc.js
   - personalization/script.js
 
-# Customization
 extra:
   version:
     provider: mike
@@ -40,23 +33,23 @@ extra:
     collapse: true
   media_dir: 'images/extract/media'
 
-
 plugins:
-- search 
-- render_swagger:
-    css: personalization/swagger-ui.css
-- i18n:
+  - search 
+  - render_swagger:
+      css: personalization/swagger-ui.css
+  - i18n:
       docs_structure: suffix
       fallback_to_default: false
+      default_language_only: false
       languages:
         - locale: it
           default: true
-          name: italian
+          name: Italian
           build: true
         - locale: en
           name: English
           build: true
-- print-site
+  - print-site
 
 markdown_extensions:
   - markdown_captions
