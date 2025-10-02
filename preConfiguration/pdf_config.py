@@ -2,7 +2,6 @@ import json
 from jinja2 import Template
 import os
 
-
 # Carica config.json
 with open("preConfiguration/config.json") as f:
     config = json.load(f)
@@ -17,7 +16,12 @@ def render_template(filename, context):
     return template.render(**context)
 
 
-# (seconda definizione rimossa, ora unica funzione DRY)
+def save_rendered(content, filename):
+    dir_path = os.path.dirname(filename)
+    if dir_path and not os.path.exists(dir_path):
+        os.makedirs(dir_path, exist_ok=True)
+    with open(filename, "w") as f:
+        f.write(content)
 
 # Lista dei template da generare e nomi file output (senza .j2)
 templates = [
